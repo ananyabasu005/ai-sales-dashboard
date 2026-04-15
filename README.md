@@ -28,14 +28,14 @@
 ### 🔐 Login Page
 ![Login](screenshots/login.png)
 
+### ✍️ Sales Input
+![Input](screenshots/sales_values_enter.png)
+
 ### 📊 Dashboard
 ![Dashboard](screenshots/dashboard.png)
 
 ### 📈 Sales Graph
 ![Graph](screenshots/graph.png)
-
-### 📈 Sales_values_enter
-![sales_values_enter](screenshots/sales_values_enter.png)
 
 ## 🚀 How to Run Locally
 ```bash
