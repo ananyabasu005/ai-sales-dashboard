@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Sales Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            text-align: center;
+        }
+
+        h1 { margin-top: 30px; }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 10px;
+            border: none;
+            margin: 10px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            background: #ff6f91;
+            color: white;
+            cursor: pointer;
+        }
+
+        .card {
+            margin: 20px auto;
+            padding: 20px;
+            width: 350px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>📊 AI Sales Forecast Dashboard</h1>
+
+<input id="salesInput" placeholder="Enter sales (e.g. 200,220,250)" />
+
+<br>
+
+<button onclick="runAI()">Run AI 🚀</button>
+
+<div id="output" style="display:none;">
+
+    <div class="card">
+        <h3>📈 Prediction</h3>
+        <p id="prediction"></p>
+    </div>
+
+    <div class="card">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>🚚 Dijkstra Output</h3>
+        <p id="dijkstra"></p>
+    </div>
+
+</div>
+
+<script>
+let chart;
+
+function runAI() {
+    let input = document.getElementById("salesInput").value;
+
+    if (!input) {
+        alert("Please enter sales data first!");
+        return;
+    }
+
+    let sales = input.split(',').map(Number);
+
+    document.getElementById("output").style.display = "none";
+
+    fetch('/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sales: sales })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        document.getElementById("output").style.display = "block";
+
+        document.getElementById("prediction").innerText =
+            "Next Day (" + data.next_day + "): " + data.prediction;
+
+        document.getElementById("dijkstra").innerText =
+            JSON.stringify(data.dijkstra);
+
+        drawChart(data.sales, data.prediction);
+    })
+    .catch(error => {
+        alert("Something went wrong. Check backend.");
+        console.log(error);
+    });
+}
+
+function drawChart(sales, prediction) {
+    let labels = sales.map((_, i) => "Day " + (i+1));
+    labels.push("Next Day");
+
+    let fullData = [...sales, prediction];
+
+    if(chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("chart"), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Sales Trend",
+                data: fullData
+            }]
+        }
+    });
+}
+</script>
+
+</body>
+</html>
