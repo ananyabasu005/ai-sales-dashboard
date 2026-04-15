@@ -21,7 +21,7 @@
 - Chart.js
 
 ## 🌐 Live Demo
-https://YOUR-RENDER-LINK
+[https://YOUR-RENDER-LINK](https://ai-sales-dashboard-25ux.onrender.com)
 
 ## 🚀 How to Run Locally
 ```bash
