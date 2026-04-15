@@ -34,6 +34,9 @@
 ### 📈 Sales Graph
 ![Graph](screenshots/graph.png)
 
+### 📈 Sales Values Enter Page
+![sales_values_enter](screenshots/sales_values_enter.png)
+
 ## 🚀 How to Run Locally
 ```bash
 pip install -r requirements.txt
