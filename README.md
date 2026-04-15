@@ -23,6 +23,20 @@
 ## 🌐 Live Demo
 (https://ai-sales-dashboard-25ux.onrender.com)
 
+## 📸 Screenshots
+
+### 🔐 Login Page
+![Login](screenshots/login.png)
+
+### 📊 Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### 📈 Sales Graph
+![Graph](screenshots/graph.png)
+
+### 📈 Sales_values_enter
+![sales_values_enter](screenshots/sales_values_enter.png)
+
 ## 🚀 How to Run Locally
 ```bash
 pip install -r requirements.txt
