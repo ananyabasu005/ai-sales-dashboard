@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Sales Dashboard</title>
+   <title>AI Sales Intelligence Dashboard | Ananya Basu</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -55,6 +55,9 @@
 <div id="output" style="display:none;">
 
     <div class="card">
+        <a href="/logout">
+    <button style="position:absolute; top:20px; right:20px;">Logout</button>
+</a>
         <h3>📈 Prediction</h3>
         <p id="prediction"></p>
     </div>
@@ -129,6 +132,8 @@ function drawChart(sales, prediction) {
     });
 }
 </script>
-
+<div style="margin-top:40px; font-size:14px;">
+    Built with AI • Flask • Chart.js 🚀
+</div>
 </body>
 </html>
