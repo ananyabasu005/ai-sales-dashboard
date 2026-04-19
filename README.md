@@ -21,21 +21,24 @@
 - Chart.js
 
 ## 🌐 Live Demo
-(https://ai-sales-dashboard-25ux.onrender.com)
+(http://localhost:10000/)
 
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login](screenshots/login.png)
+![Login](screenshots/login page)
 
-### ✍️ Sales Input
-![Input](screenshots/sales_values_enter.png)
+### ✍️ Data Input
+![Input](screenshots/data input)
 
-### 📊 Dashboard
-![Dashboard](screenshots/dashboard.png)
+### 📊 Analyzed Sales Graph
+![Graph](screenshots/analyzed sales graph)
 
-### 📈 Sales Graph
-![Graph](screenshots/graph.png)
+### 📈 Competitor Strategy
+![Strategy](screenshots/competitor strategy)
+
+### 📈 Chaos Simulation Graph
+![Simulator](screenshots/chaos simulation graph)
 
 ## 🚀 How to Run Locally
 ```bash

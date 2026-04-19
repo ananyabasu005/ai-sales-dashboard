@@ -1,93 +1,328 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-   <title>AI Sales Intelligence Dashboard | Ananya Basu</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>AI Sales Intelligence Dashboard</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: Arial;
-            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
-            text-align: center;
+        :root {
+            --bg-color: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --neon-glow: 0 0 15px rgba(56, 189, 248, 0.5);
+            --chaos-glow: 0 0 20px rgba(192, 132, 252, 0.6);
         }
 
-        h1 { margin-top: 30px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, #1e1b4b, var(--bg-color), #020617);
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-        input {
-            padding: 10px;
-            width: 250px;
-            border-radius: 10px;
-            border: none;
-            margin: 10px;
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent);
+            box-shadow: var(--neon-glow);
+        }
+        
+        select option {
+            background: var(--bg-color);
+            color: white;
         }
 
         button {
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 12px 24px;
+            border-radius: 8px;
             border: none;
-            background: #ff6f91;
+            background: var(--accent);
             color: white;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
         }
 
-        .card {
-            margin: 20px auto;
-            padding: 20px;
-            width: 350px;
-            border-radius: 15px;
-            background: white;
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+        button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--neon-glow);
         }
+        
+        .btn-chaos {
+            background: linear-gradient(45deg, #a855f7, #ec4899);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+        .btn-chaos:hover {
+            background: linear-gradient(45deg, #9333ea, #db2777);
+            box-shadow: var(--chaos-glow);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.8);
+            box-shadow: none;
+        }
+        .btn-logout:hover {
+            background: rgba(220, 38, 38, 1);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+
+        .dashboard-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .metric-cards {
+            display: flex;
+            gap: 15px;
+        }
+
+        .metric-card {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            grid-row: 2 / span 2;
+        }
+
+        .chat-box {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .chat-message {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: var(--accent);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-ai {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .wargame-panel {
+            grid-column: 1 / 2;
+            margin-top: 0;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border-left: 4px solid #ef4444;
+        }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
 
 <body>
 
-<h1>📊 AI Sales Forecast Dashboard</h1>
-
-<input id="salesInput" placeholder="Enter sales (e.g. 200,220,250)" />
-
-<br>
-
-<button onclick="runAI()">Run AI 🚀</button>
-
-<div id="output" style="display:none;">
-
-    <div class="card">
-        <a href="/logout">
-    <button style="position:absolute; top:20px; right:20px;">Logout</button>
-</a>
-        <h3>📈 Prediction</h3>
-        <p id="prediction"></p>
+<div class="container">
+    <div class="header glass-panel">
+        <h1>📊 AI Sales Intelligence</h1>
+        <a href="/logout"><button class="btn-logout">Logout</button></a>
     </div>
 
-    <div class="card">
-        <canvas id="chart"></canvas>
+    <!-- Main Dashboard -->
+    <div class="glass-panel dashboard-content">
+        <h3>Sales Data Input</h3>
+        <div class="input-group">
+            <input id="salesInput" placeholder="Enter historical sales (e.g., 200, 220, 250, 280)" />
+            <button onclick="runAI()">Analyze Standard 🚀</button>
+            <button onclick="simulateChaos()" class="btn-chaos" id="btnChaos" style="display:none;">Simulate Chaos 🌪️</button>
+        </div>
+
+        <div id="results" class="hidden">
+            <div class="metric-cards">
+                <div class="metric-card">
+                    <div style="font-size: 12px; color: var(--text-secondary)">Predicted Next Day</div>
+                    <div class="metric-value" id="predVal">--</div>
+                </div>
+                <div class="metric-card">
+                    <div style="font-size: 12px; color: var(--text-secondary)">Optimistic Bound</div>
+                    <div class="metric-value" id="upperVal" style="color: #4ade80">--</div>
+                </div>
+                <div class="metric-card">
+                    <div style="font-size: 12px; color: var(--text-secondary)">Pessimistic Bound</div>
+                    <div class="metric-value" id="lowerVal" style="color: #f87171">--</div>
+                </div>
+            </div>
+
+            <div class="chart-container" style="margin-top: 20px;">
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
     </div>
 
-    <div class="card">
-        <h3>🚚 Dijkstra Output</h3>
-        <p id="dijkstra"></p>
+    <!-- AI Chat Assistant -->
+    <div class="glass-panel chat-container">
+        <h3 style="margin-bottom: 15px;">🤖 Sales Assistant</h3>
+        <div class="chat-box" id="chatBox">
+            <div class="chat-message msg-ai">Hello! I'm your AI Sales Assistant. Enter some sales data and ask me questions about trends or predictions!</div>
+        </div>
+        <div class="chat-input">
+            <input id="chatInput" placeholder="Ask about the data..." onkeypress="handleChatEnter(event)"/>
+            <button onclick="sendMessage()">Send</button>
+        </div>
     </div>
-
+    
+    <!-- AI Wargames Panel -->
+    <div class="glass-panel wargame-panel hidden" id="wargamePanel">
+        <h3 style="margin-bottom: 10px; color: #ef4444;">⚔️ Competitor Wargames (Alpha-Beta Pruning)</h3>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 15px;">
+            Simulate your competitor's optimal counter-move to your business strategy.
+        </p>
+        <div class="input-group">
+            <select id="strategySelect">
+                <option value="Price Cut">Strategy: Price Cut</option>
+                <option value="Marketing Blitz">Strategy: Marketing Blitz</option>
+                <option value="Product Update">Strategy: Product Update</option>
+            </select>
+            <button onclick="playWargame()" style="background: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);">Play Move</button>
+        </div>
+        
+        <div id="wargameResult" style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);" class="hidden">
+            <div style="color: #fca5a5; font-size: 14px; font-weight: bold;">Competitor Reaction:</div>
+            <div id="wgReaction" style="margin-top: 5px; font-size: 13px;"></div>
+            <div style="margin-top: 10px; color: #86efac; font-weight: bold;">Adjusted New Prediction: <span id="wgPrediction" style="font-size: 18px;"></span></div>
+        </div>
+    </div>
 </div>
 
 <script>
 let chart;
+let currentSalesData = [];
+let basePrediction = 0;
 
 function runAI() {
     let input = document.getElementById("salesInput").value;
-
     if (!input) {
-        alert("Please enter sales data first!");
+        addChatMessage("AI", "Please enter some sales data first!", "msg-ai");
         return;
     }
 
-    let sales = input.split(',').map(Number);
-
-    document.getElementById("output").style.display = "none";
-
+    let sales = input.split(',').map(s => Number(s.trim()));
+    if(sales.some(isNaN)) {
+        addChatMessage("AI", "Invalid input. Please enter numbers separated by commas.", "msg-ai");
+        return;
+    }
+    
+    currentSalesData = sales;
+    
     fetch('/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,45 +330,184 @@ function runAI() {
     })
     .then(res => res.json())
     .then(data => {
+        document.getElementById("results").classList.remove("hidden");
+        document.getElementById("wargamePanel").classList.remove("hidden");
+        document.getElementById("btnChaos").style.display = "block";
 
-        document.getElementById("output").style.display = "block";
-
-        document.getElementById("prediction").innerText =
-            "Next Day (" + data.next_day + "): " + data.prediction;
-
-        document.getElementById("dijkstra").innerText =
-            JSON.stringify(data.dijkstra);
-
-        drawChart(data.sales, data.prediction);
+        basePrediction = data.prediction;
+        document.getElementById("predVal").innerText = data.prediction;
+        document.getElementById("upperVal").innerText = data.upper_bound;
+        document.getElementById("lowerVal").innerText = data.lower_bound;
+        
+        drawChart(data.sales, data.prediction, data.upper_bound, data.lower_bound);
+        addChatMessage("AI", `Standard analysis complete. You can now simulate chaos or run competitor wargames!`, "msg-ai");
     })
-    .catch(error => {
-        alert("Something went wrong. Check backend.");
-        console.log(error);
+    .catch(error => console.error(error));
+}
+
+function simulateChaos() {
+    if(currentSalesData.length === 0) return;
+    
+    fetch('/simulate_chaos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sales: currentSalesData })
+    })
+    .then(res => res.json())
+    .then(data => {
+        // Redraw chart with multiverse timelines
+        drawMultiverseChart(currentSalesData, data.multiverse);
+        addChatMessage("AI", `🌪️ Chaos simulated! I've projected alternate timelines showing potential extreme volatility.`, "msg-ai");
     });
 }
 
-function drawChart(sales, prediction) {
+function playWargame() {
+    let strategy = document.getElementById("strategySelect").value;
+    
+    fetch('/wargame', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ strategy: strategy, sales: currentSalesData })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("wargameResult").classList.remove("hidden");
+        document.getElementById("wgReaction").innerText = data.competitor_reaction;
+        document.getElementById("wgPrediction").innerText = data.new_prediction;
+        
+        addChatMessage("AI", `⚔️ You played ${strategy}. ${data.competitor_reaction}. New adjusted forecast: ${data.new_prediction}.`, "msg-ai");
+    });
+}
+
+function drawChart(sales, prediction, upper, lower) {
     let labels = sales.map((_, i) => "Day " + (i+1));
     labels.push("Next Day");
 
-    let fullData = [...sales, prediction];
+    let actualData = [...sales, null];
+    let predData = Array(sales.length - 1).fill(null);
+    predData.push(sales[sales.length - 1], prediction);
+    let upperData = Array(sales.length - 1).fill(null);
+    upperData.push(sales[sales.length - 1], upper);
+    let lowerData = Array(sales.length - 1).fill(null);
+    lowerData.push(sales[sales.length - 1], lower);
 
     if(chart) chart.destroy();
+
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.font.family = 'Inter';
 
     chart = new Chart(document.getElementById("chart"), {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [{
-                label: "Sales Trend",
-                data: fullData
-            }]
-        }
+            datasets: [
+                {
+                    label: "Actual Sales",
+                    data: actualData,
+                    borderColor: '#f8fafc',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    pointRadius: 4
+                },
+                {
+                    label: "Linear Prediction",
+                    data: predData,
+                    borderColor: '#38bdf8',
+                    borderDash: [5, 5],
+                    tension: 0.3,
+                    borderWidth: 2,
+                    pointRadius: 6
+                },
+                {
+                    label: "Upper Bound",
+                    data: upperData,
+                    borderColor: 'rgba(74, 222, 128, 0.3)',
+                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                    fill: '+1',
+                    tension: 0.3,
+                    pointRadius: 0
+                },
+                {
+                    label: "Lower Bound",
+                    data: lowerData,
+                    borderColor: 'rgba(248, 113, 113, 0.3)',
+                    tension: 0.3,
+                    pointRadius: 0
+                }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
     });
 }
+
+function drawMultiverseChart(sales, multiverseLines) {
+    let labels = sales.map((_, i) => "Day " + (i+1));
+    // Multiverse predicts 5 days into future
+    for(let i=1; i<=5; i++) labels.push("Day " + (sales.length + i));
+
+    let datasets = [{
+        label: "Historical Data",
+        data: [...sales, ...Array(5).fill(null)],
+        borderColor: '#f8fafc',
+        borderWidth: 3,
+        tension: 0.3
+    }];
+    
+    multiverseLines.forEach(line => {
+        let padData = Array(sales.length - 1).fill(null);
+        padData.push(sales[sales.length - 1], ...line.data);
+        
+        datasets.push({
+            label: line.label,
+            data: padData,
+            borderColor: line.borderColor,
+            borderDash: [8, 4],
+            borderWidth: 2,
+            tension: 0.4
+        });
+    });
+
+    if(chart) chart.destroy();
+    
+    chart = new Chart(document.getElementById("chart"), {
+        type: 'line',
+        data: { labels: labels, datasets: datasets },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+}
+
+function handleChatEnter(e) {
+    if(e.key === 'Enter') sendMessage();
+}
+
+function sendMessage() {
+    let inputEl = document.getElementById("chatInput");
+    let msg = inputEl.value.trim();
+    if(!msg) return;
+
+    addChatMessage("You", msg, "msg-user");
+    inputEl.value = "";
+
+    fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, sales: currentSalesData })
+    })
+    .then(res => res.json())
+    .then(data => {
+        addChatMessage("AI", data.response, "msg-ai");
+    });
+}
+
+function addChatMessage(sender, text, className) {
+    let box = document.getElementById("chatBox");
+    let div = document.createElement("div");
+    div.className = "chat-message " + className;
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
 </script>
-<div style="margin-top:40px; font-size:14px;">
-    Built with AI • Flask • Chart.js 🚀
-</div>
+
 </body>
 </html>
