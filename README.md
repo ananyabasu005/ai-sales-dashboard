@@ -26,19 +26,19 @@
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login](screenshots/login page)
+![Login](screenshots/login page.png)
 
 ### ✍️ Data Input
-![Input](screenshots/data input)
+![Input](screenshots/data input.png)
 
 ### 📊 Analyzed Sales Graph
-![Graph](screenshots/analyzed sales graph)
+![Graph](screenshots/analyzed sales graph.png)
 
 ### 📈 Competitor Strategy
-![Strategy](screenshots/competitor strategy)
+![Strategy](screenshots/competitor strategy.png)
 
 ### 📈 Chaos Simulation Graph
-![Simulator](screenshots/chaos simulation graph)
+![Simulator](screenshots/chaos simulation graph.png)
 
 ## 🚀 How to Run Locally
 ```bash
